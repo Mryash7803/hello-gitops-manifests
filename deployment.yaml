@@ -6,7 +6,7 @@ metadata:
   labels:
     app: hello
 spec:
-  replicas: 1 # We'll start with 1 replica
+  replicas: 3 # We'll start with 1 replica
   selector:
     matchLabels:
       app: hello

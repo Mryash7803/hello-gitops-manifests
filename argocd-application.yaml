@@ -1,0 +1,19 @@
+# argocd-application.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hello-app
+  namespace: argocd # This resource must be in the argocd namespace
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/Mryash7803/hello-gitops-manifests.git' # <-- CHANGE THIS
+    targetRevision: HEAD # Track the latest commit on the main branch
+    path: '.' # Watch the root directory of the repo
+  destination:
+    server: 'https://kubernetes.default.svc' # Target the same cluster where ArgoCD is running
+    namespace: default # Deploy the app into the 'default' namespace
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
