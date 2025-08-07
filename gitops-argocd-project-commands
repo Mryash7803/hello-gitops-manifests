@@ -1,0 +1,76 @@
+argocd,gitops project commands 
+
+Phase 1: Prerequisites & Setup
+Start a local Kubernetes cluster with Minikube:
+
+Bash
+
+minikube start --driver=docker
+Check the connection to your cluster:
+
+Bash
+
+kubectl cluster-info
+## Phase 2: Setting up the Git Repositories
+Clone the GitHub repository to your local machine:
+
+Bash
+
+git clone https://github.com/YOUR_USERNAME/hello-gitops-manifests.git
+Navigate into the repository directory:
+
+Bash
+
+cd hello-gitops-manifests
+Stage changes for a commit:
+
+Bash
+
+git add .
+Commit the changes with a message:
+
+Bash
+
+git commit -m "commit message"
+Push the changes to the remote repository on GitHub:
+
+Bash
+
+git push origin main
+## Phase 3: Installing and Configuring ArgoCD
+Create a namespace for ArgoCD:
+
+Bash
+
+kubectl create namespace argocd
+Install ArgoCD components into the cluster:
+
+Bash
+
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+Forward a local port to the ArgoCD server service:
+
+Bash
+
+kubectl port-forward svc/argocd-server -n argocd 8080:443
+Retrieve the initial admin password for the ArgoCD UI:
+
+Bash
+
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+Apply the declarative application manifest to configure ArgoCD:
+
+Bash
+
+kubectl apply -f argocd-application.yaml
+## Phase 4: Verification and Demonstration
+Check the status of pods and services in a specific namespace:
+
+Bash
+
+kubectl get pods,svc -n default
+Check the status of pods (useful for seeing multiple replicas):
+
+Bash
+
+kubectl get pods -n default
