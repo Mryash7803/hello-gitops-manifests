@@ -1,0 +1,35 @@
+# hello-gitops-manifests/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-app
+  labels:
+    app: hello
+spec:
+  replicas: 1 # We'll start with 1 replica
+  selector:
+    matchLabels:
+      app: hello
+  template:
+    metadata:
+      labels:
+        app: hello
+    spec:
+      containers:
+      - name: hello-app
+        image: nginxdemos/hello:latest # The public demo application image
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-app-service
+spec:
+  selector:
+    app: hello
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: NodePort # Use NodePort for easy access on Minikube
